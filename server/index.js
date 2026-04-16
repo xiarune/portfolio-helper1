@@ -5,10 +5,27 @@ import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://portfolio-helper-wine.vercel.app",
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.some(o => origin.startsWith(o.replace(/\/$/, '')))) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+}));
 app.use(express.json());
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
 
 app.post("/api/generate", async (req, res) => {
   const { description } = req.body;
