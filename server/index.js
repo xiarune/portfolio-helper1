@@ -31,7 +31,7 @@ app.post("/api/generate", async (req, res) => {
         "X-Title": "Portfolio Helper",
       },
       body: JSON.stringify({
-        model: "meta-llama/llama-3.2-3b-instruct:free",
+        model: "google/gemma-3-4b-it:free",
         messages: [
           {
             role: "user",
